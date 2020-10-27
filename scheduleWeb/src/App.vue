@@ -3,7 +3,6 @@
     <div class="el-div-car" id="divCarId">
       <img src="./assets/car.png" class="el-car">
     </div>
-
     <div class="el-people1" id="divPeople1Id">
       <img src="./assets/people1.png" class="el-people1">
     </div>
@@ -21,15 +20,17 @@
     </div>
 
     <h1>{{carCoordinate}}</h1>
-    <button class="el-button" @click="start">开始</button>
-    <button class="el-button" @click="end">结束</button>
-
+    <button class="el-button" @click="this.FIFO">FIFO</button>
+    <button class="el-button" @click="this.SJF">SJF</button>
+    <button class="el-button" @click="this.EDF">EDF</button>
+    <button class="el-button" @click="this.Priority">Priority</button>
     <div id="main" style="width: 600px;height: 400px;"></div>
   </div>
 </template>
 
 <script>
     import echarts from 'echarts'
+
     export default {
         created() {
             this.timer()
@@ -37,24 +38,24 @@
         name: 'App',
         data() {
             return {
-                SJF: [2, 2, 1, 1, 1, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                FIFO: [1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                Priority: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                EDF: [2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                SJFArr: [2, 2, 1, 1, 1, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                FIFOArr: [1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                PriorityArr: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                EDFArr: [2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1],
                 carCoordinate: [20, 10],
                 peopleCoordinate: [200, 200],
             }
         },
         methods: {
-            drawPie(id){
+            drawPie(id, name, arr) {
                 this.charts = echarts.init(document.getElementById(id));
                 let xAxis = [];
-                for(let i=1;i<=this.SJF.length;i++){
+                for (let i = 1; i <= arr.length; i++) {
                     xAxis.push(i);
                 }
                 this.charts.setOption({
                     title: {
-                        text: 'Task Execution'
+                        text: name
                     },
                     grid: {
                         left: '3%',
@@ -74,23 +75,24 @@
                             name: 'Step Start',
                             type: 'line',
                             step: 'start',
-                            data: this.SJF
+                            data: arr
                         }
                     ]
                 })
             },
 
-            start: function () {
-                this.drawPie("main");
-                var times = 0;
-                while (times < 10) {
-                    setTimeout(this.funTmp, 2000);
-                    this.carMove();
-                    times++;
-                }
-            },
-            end: function () {
+            FIFO: function () {
+                this.drawPie('main','FIFO', this.FIFOArr);
 
+            },
+            EDF: function () {
+                this.drawPie('main','EDF',this.EDFArr);
+            },
+            Priority: function () {
+                this.drawPie('main','Priority',this.PriorityArr);
+            },
+            SJF: function () {
+                this.drawPie('main','SJF',this.SJFArr);
             },
             carMove: function () {
                 var carDiv = document.getElementById('divCarId');
