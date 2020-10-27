@@ -33,7 +33,6 @@
 
     export default {
         created() {
-            this.timer()
         },
         name: 'App',
         data() {
@@ -82,6 +81,19 @@
             },
 
             FIFO: function () {
+                var index = 0;
+                while (index < this.FIFOArr.length){
+                    var tmp = this.countTimeSlice(this.FIFOArr,index);
+                    var times = tmp[0];
+                    index = tmp[1];
+                    var stepX = 1;
+                    var stepY = 1;
+                    for (var i = 0; i < times ; i++) {
+
+                        this.timer(stepX,stepY);
+                    }
+
+                }
                 this.drawPie('main','FIFO', this.FIFOArr);
 
             },
@@ -94,10 +106,25 @@
             SJF: function () {
                 this.drawPie('main','SJF',this.SJFArr);
             },
-            carMove: function () {
+            countTimeSlice(arr,index){
+                var curr = arr[index];
+                var count = 1;
+                var i = index + 1;
+                for (; i < arr.length ; i++) {
+                    if (curr == arr[i]){
+                        count++;
+                    }else {
+                        break;
+                    }
+                }
+                return [count,i];
+            },
+            carMove: function (stepx,stepy) {
                 var carDiv = document.getElementById('divCarId');
-                this.carCoordinate[0] = (this.carCoordinate[0] + 20) % 1590;
+                this.carCoordinate[0] = (this.carCoordinate[0] + stepx) % 1000;
+                this.carCoordinate[1] = (this.carCoordinate[1] + stepy) % 500;
                 carDiv.style.left = this.carCoordinate[0] + 'px';
+                carDiv.style.top = this.carCoordinate[1] + 'px';
             },
             sleep: function sleep(time) {
                 return new Promise(resolve => {
@@ -106,9 +133,9 @@
                     }, time);
                 });
             },
-            timer() {
+            timer(stepx,stepy) {
                 return setInterval(() => {
-                    this.carMove()
+                    this.carMove(stepx,stepy)
                 }, 500)
             }
         }
