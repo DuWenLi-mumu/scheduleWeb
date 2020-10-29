@@ -1,29 +1,32 @@
 <template>
   <div id="app" class="el-div">
-    <div class="el-div-car" id="divCarId">
-      <img src="./assets/car.png" class="el-car">
-    </div>
-    <div class="el-people1" id="divPeople1Id">
-      <img src="./assets/people1.png" class="el-people1">
-    </div>
-    <div class="el-people2" id="divPeople2Id">
-      <img src="./assets/people2.png" class="el-people2">
-    </div>
-    <div class="el-people3" id="divPeople3Id">
-      <img src="./assets/people3.png" class="el-people3">
-    </div>
-    <div class="el-people4" id="divPeople4Id">
-      <img src="./assets/people4.png" class="el-people4">
-    </div>
-    <div class="el-people5" id="divPeople5Id">
-      <img src="./assets/people5.png" class="el-people5">
-    </div>
+    <img src="./assets/car.png" id="divCarId" class="el-div-car">
+
+    <img src="./assets/people1.png" class="el-people1" id="divPeople1Id">
+
+    <img src="./assets/people2.png" class="el-people2" id="divPeople2Id">
+
+    <img src="./assets/people3.png" class="el-people3" id="divPeople3Id">
+
+    <img src="./assets/people4.png" class="el-people4" id="divPeople4Id">
+
+    <img src="./assets/people5.png" class="el-people5" id="divPeople5Id">
+
+    <img src="./assets/dest1.png" class="el-dest1" id = dest1Id>
+
+    <img src="./assets/dest2.png" class="el-dest2" id = dest2Id>
+
+    <img src="./assets/dest3.png" class="el-dest3" id = dest3Id>
+
+    <img src="./assets/dest4.png" class="el-dest4" id = dest4Id>
+
+    <img src="./assets/dest5.png" class="el-dest5" id = dest5Id>
 
     <h1>{{carCoordinate}}</h1>
-    <button class="el-button" @click="this.FIFO">FIFO</button>
-    <button class="el-button" @click="this.SJF">SJF</button>
-    <button class="el-button" @click="this.EDF">EDF</button>
-    <button class="el-button" @click="this.Priority">Priority</button>
+    <button class="el-button" @click="mySchedule(FIFOArr,'FIFO')">FIFO</button>
+    <button class="el-button" @click="mySchedule(SJFArr,'SJF')">SJF</button>
+    <button class="el-button" @click="mySchedule(EDFArr,'EDF')">EDF</button>
+    <button class="el-button" @click="mySchedule(PriorityArr,'Priority')">Priority</button>
     <div id="main" style="width: 600px;height: 400px;"></div>
   </div>
 </template>
@@ -38,15 +41,24 @@
         data() {
             return {
                 SJFArr: [2, 2, 1, 1, 1, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                FIFOArr: [1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                FIFOArr: [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4,-1,-1,-1,-1,-2,-2,-2,-2,-3,-3,-3,-3,-3,-3,-4,-4,-4,-4,-4,-5,-5,-5,-5,-5],
                 PriorityArr: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1],
                 EDFArr: [2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                carCoordinate: [20, 10],
-                peopleCoordinate: [200, 200],
+                carCoordinate: [20, 40],
+                people1: [1200, 80],
+                people2: [800, 200],
+                people3: [200, 150],
+                people4: [50, 500],
+                people5: [1000, 450],
+                people1Destination:[500,50],
+                people2Destination:[100,500],
+                people3Destination:[1000,600],
+                people4Destination:[500,300],
+                people5Destination:[400,100],
             }
         },
         methods: {
-            drawPie(id, name, arr) {
+            drawPie: function (id, name, arr) {
                 this.charts = echarts.init(document.getElementById(id));
                 let xAxis = [];
                 for (let i = 1; i <= arr.length; i++) {
@@ -79,52 +91,79 @@
                     ]
                 })
             },
-
-            FIFO: function () {
-                var index = 0;
-                while (index < this.FIFOArr.length){
-                    var tmp = this.countTimeSlice(this.FIFOArr,index);
-                    var times = tmp[0];
-                    index = tmp[1];
-                    var stepX = 1;
-                    var stepY = 1;
-                    for (var i = 0; i < times ; i++) {
-
-                        this.timer(stepX,stepY);
+            mySchedule: function (arr, name) {
+                let peopleIndex = [];
+                var that = this;
+                var timesRun = 0;
+                var interval = setInterval(function () {
+                    if (arr[timesRun] > 0){
+                        var currPeople = document.getElementById("divPeople"+arr[timesRun]+"Id");
+                        var currDest = document.getElementById("dest"+arr[timesRun]+"Id");
+                        currPeople.style.visibility = 'visible';
+                        currDest.style.visibility = 'visible';
                     }
+                    switch (arr[timesRun]) {
+                        case 1:
+                            peopleIndex = that.people1;
+                            break;
+                        case 2:
+                            peopleIndex = that.people2;
+                            break;
+                        case 3:
+                            peopleIndex = that.people3;
+                            break;
+                        case 4:
+                            peopleIndex = that.people4;
+                            break;
+                        case -1:
+                            peopleIndex = that.people1Destination;
+                            break;
+                        case -2:
+                            peopleIndex = that.people2Destination;
+                            break;
+                        case -3:
+                            peopleIndex = that.people3Destination;
+                            break;
+                        case -4:
+                            peopleIndex = that.people4Destination;
+                            break;
+                        case -5:
+                            peopleIndex = that.people5Destination;
+                            break;
+                        default:
+                            peopleIndex = that.people5;
+                            break;
+                    }
+                    var tmp = that.countTimeSlice(arr, timesRun);
+                    var times = tmp[0];
+                    var stepX = (peopleIndex[0] - that.carCoordinate[0]) / times;
+                    var stepY = (peopleIndex[1] - that.carCoordinate[1]) / times;
+                    var carDiv = document.getElementById('divCarId');
+                    that.carCoordinate[0] = that.carCoordinate[0] + stepX;
+                    that.carCoordinate[1] = that.carCoordinate[1] + stepY;
+                    carDiv.style.left = that.carCoordinate[0] + 'px';
+                    carDiv.style.top = that.carCoordinate[1] + 'px';
+                    if (timesRun >= arr.length) {
+                        clearInterval(interval);
+                    }
+                    timesRun += 1;
 
-                }
-                this.drawPie('main','FIFO', this.FIFOArr);
+                }, 500);
 
+                // this.drawPie('main', name, arr);
             },
-            EDF: function () {
-                this.drawPie('main','EDF',this.EDFArr);
-            },
-            Priority: function () {
-                this.drawPie('main','Priority',this.PriorityArr);
-            },
-            SJF: function () {
-                this.drawPie('main','SJF',this.SJFArr);
-            },
-            countTimeSlice(arr,index){
+            countTimeSlice: function (arr, index) {
                 var curr = arr[index];
                 var count = 1;
                 var i = index + 1;
-                for (; i < arr.length ; i++) {
-                    if (curr == arr[i]){
+                for (; i < arr.length; i++) {
+                    if (curr == arr[i]) {
                         count++;
-                    }else {
+                    } else {
                         break;
                     }
                 }
-                return [count,i];
-            },
-            carMove: function (stepx,stepy) {
-                var carDiv = document.getElementById('divCarId');
-                this.carCoordinate[0] = (this.carCoordinate[0] + stepx) % 1000;
-                this.carCoordinate[1] = (this.carCoordinate[1] + stepy) % 500;
-                carDiv.style.left = this.carCoordinate[0] + 'px';
-                carDiv.style.top = this.carCoordinate[1] + 'px';
+                return [count, i];
             },
             sleep: function sleep(time) {
                 return new Promise(resolve => {
@@ -133,11 +172,6 @@
                     }, time);
                 });
             },
-            timer(stepx,stepy) {
-                return setInterval(() => {
-                    this.carMove(stepx,stepy)
-                }, 500)
-            }
         }
 
     }
@@ -159,6 +193,7 @@
     height: 100px;
     position: absolute;
     left: 20px;
+    top: 40px;
   }
 
   /* 更改element-UI按钮样式 */
@@ -168,12 +203,6 @@
     height: 600px;
   }
 
-  .el-car {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 
 
   .el-button {
@@ -193,48 +222,93 @@
   }
 
   .el-people1 {
+    /*background-color: antiquewhite;*/
     width: 100px;
     height: 100px;
-    visibility: visible;
+    visibility: hidden;
     position: absolute;
-    left: 20px;
-    top: 30px;
+    left: 1200px;
+    top: 80px;
   }
 
   .el-people2 {
+    /*background-color: antiquewhite;*/
     width: 100px;
     height: 100px;
-    visibility: visible;
+    visibility: hidden;
     position: absolute;
-    left: 100px;
-    top: 100px;
-  }
-
-  .el-people3 {
-    width: 100px;
-    height: 100px;
-    visibility: visible;
-    position: absolute;
-    left: 300px;
-    top: 100px;
-  }
-
-  .el-people4 {
-    width: 100px;
-    height: 100px;
-    visibility: visible;
-    position: absolute;
-    left: 400px;
+    left: 800px;
     top: 200px;
   }
 
-  .el-people5 {
+  .el-people3 {
+    /*background-color: antiquewhite;*/
     width: 100px;
     height: 100px;
-    visibility: visible;
+    visibility: hidden;
+    position: absolute;
+    left: 200px;
+    top: 150px;
+  }
+
+  .el-people4 {
+    /*background-color: antiquewhite;*/
+    width: 100px;
+    height: 100px;
+    visibility: hidden;
+    position: absolute;
+    left: 50px;
+    top: 500px;
+  }
+
+  .el-people5 {
+    /*background-color: antiquewhite;*/
+    width: 100px;
+    height: 100px;
+    visibility: hidden;
+    position: absolute;
+    left: 1000px;
+    top: 450px;
+  }
+  .el-dest1{
+    width: 100px;
+    height: 100px;
+    visibility: hidden;
+    position: absolute;
+    left: 500px;
+    top: 50px;
+  }
+  .el-dest2{
+    width: 100px;
+    height: 100px;
+    visibility: hidden;
+    position: absolute;
+    left: 100px;
+    top: 500px;
+  }
+  .el-dest3{
+    width: 100px;
+    height: 100px;
+    visibility: hidden;
+    position: absolute;
+    left: 1000px;
+    top: 600px;
+  }
+  .el-dest4{
+    width: 100px;
+    height: 100px;
+    visibility: hidden;
     position: absolute;
     left: 500px;
     top: 300px;
+  }
+  .el-dest5{
+    width: 100px;
+    height: 100px;
+    visibility: hidden;
+    position: absolute;
+    left: 400px;
+    top: 100px;
   }
 
 
