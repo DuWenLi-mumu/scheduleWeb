@@ -23,7 +23,46 @@
     <img src="./assets/dest5.png" class="el-dest5" id=dest5Id>
 
     <div class="el-divIllustrate">
-
+      <form>
+        乘客1<br>
+        ddl:<input id="people1DDL" type="text"><br>
+        优先级：<input id="people1Pri" type="text"><br>
+        到达时间：<input id="people1Arrive" type="text"><br>
+        接时间：<input id="people1Access" type="text"><br>
+        送时间:<input id="people1Send" type="text">
+      </form>
+      <form>
+        乘客2 <br>
+        ddl:<input id="people2DDL" type="text"><br>
+        优先级：<input id="people2Pri" type="text"><br>
+        到达时间：<input id="people2Arrive" type="text"><br>
+        接时间：<input id="people2Access" type="text"><br>
+        送时间:<input id="people2Send" type="text">
+      </form>
+      <form>
+        乘客3 <br>
+        ddl:<input id="people3DDL" type="text"><br>
+        优先级：<input id="people3Pri" type="text"><br>
+        到达时间：<input id="people3Arrive" type="text"><br>
+        接时间：<input id="people3Access" type="text"><br>
+        送时间:<input id="people3Send" type="text">
+      </form>
+      <form>
+        乘客4 <br>
+        ddl:<input id="people4DDL" type="text"><br>
+        优先级：<input id="people4Pri" type="text"><br>
+        到达时间：<input id="people4Arrive" type="text"><br>
+        接时间：<input id="people4Access" type="text"><br>
+        送时间:<input id="people4Send" type="text">
+      </form>
+      <form>
+        乘客5 <br>
+        ddl:<input id="people5DDL" type="text"><br>
+        优先级：<input id="people5Pri" type="text"><br>
+        到达时间：<input id="people5Arrive" type="text"><br>
+        接时间：<input id="people5Access" type="text"><br>
+        送时间:<input id="people5Send" type="text">
+      </form>
       <button class="el-button" @click="mySchedule(FIFOArr,'FIFO')">FIFO</button>
       <button class="el-button" @click="mySchedule(SJFArr,'SJF')">SJF</button>
       <button class="el-button" @click="mySchedule(EDFArr,'EDF')">EDF</button>
@@ -39,6 +78,7 @@
 
 <script>
     import echarts from 'echarts'
+    const axios = require('axios');
 
     export default {
         created() {
@@ -51,22 +91,43 @@
                 PriorityArr: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1],
                 EDFArr: [2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1],
                 carCoordinate: [20, 40],
-                people1: [1200, 80],
+                people1: [900, 80],
                 people2: [800, 200],
                 people3: [200, 150],
                 people4: [50, 500],
-                people5: [1000, 450],
+                people5: [920, 450],
                 people1Destination: [500, 50],
                 people2Destination: [100, 500],
-                people3Destination: [1000, 600],
+                people3Destination: [800, 600],
                 people4Destination: [500, 300],
                 people5Destination: [400, 100],
                 peopleList: [],
                 currPeople: 1,
-                finish:[]
+                finish: []
             }
         },
         methods: {
+            getInputData: function () {
+                let completeData = true;
+                let orders = [];
+                for (let i = 1; i <= 5; i++) {
+                    let tmpArrive = document.getElementById("people" + i + "Arrive").value;
+                    let tmpAccess = document.getElementById("people" + i + "Access").value;
+                    let tmpSend = document.getElementById("people" + i + "Send").value;
+                    let tmpPri = document.getElementById("people" + i + "Pri").value;
+                    let tmpDDL = document.getElementById("people" + i + "DDL").value;
+                    if (tmpAccess == "" || tmpArrive == "" || tmpSend == "") {
+                        alert("请输入完整数据");
+                        completeData = false;
+                        break;
+                    } else {
+                        let tmpPeople = [];
+                        tmpPeople.push({"id": i}, {"arriveTime": tmpArrive}, {"executionTime1": tmpAccess}, {"executionTime2": tmpSend}, {"deadline": tmpDDL}, {"priority": tmpPri});
+                        orders.push(tmpPeople);
+                    }
+                }
+                return orders;
+            },
             drawPie: function (id, name, arr) {
                 this.charts = echarts.init(document.getElementById(id));
                 let xAxis = [];
@@ -101,6 +162,12 @@
                 })
             },
             mySchedule: function (arr, name) {
+                let data = this.getInputData();
+                let responseData = [];
+                axios.post("/fifo",data).then(function (res) {
+                    responseData = res;
+                })
+
                 let peopleIndex = [];
                 var that = this;
                 var timesRun = 0;
@@ -112,6 +179,8 @@
                         currDest.style.visibility = 'visible';
                         that.peopleList.push(arr[timesRun]);
                         that.currPeople = arr[timesRun];
+                    } else {
+                        that.currPeople = arr[timesRun] * (-1);
                     }
                     switch (arr[timesRun]) {
                         case 1:
@@ -161,13 +230,13 @@
                         currDest.style.visibility = 'hidden';
                         clearInterval(interval);
                     }
-                    if (timesRun - 1 >= 0 && arr[timesRun] != arr[timesRun - 1]){
+                    if (timesRun - 1 >= 0 && arr[timesRun] != arr[timesRun - 1]) {
                         if (arr[timesRun - 1] < 0) {
-                            var currDest = document.getElementById("dest" + (arr[timesRun-1] * (-1)) + "Id");
+                            var currDest = document.getElementById("dest" + (arr[timesRun - 1] * (-1)) + "Id");
                             currDest.style.visibility = 'hidden';
-                            that.finish.push(arr[timesRun - 1]*(-1));
-                        }else {
-                            var currPeople = document.getElementById("divPeople" + (arr[timesRun-1]) + "Id");
+                            that.finish.push(arr[timesRun - 1] * (-1));
+                        } else {
+                            var currPeople = document.getElementById("divPeople" + (arr[timesRun - 1]) + "Id");
                             currPeople.style.visibility = 'hidden';
                         }
                     }
@@ -176,7 +245,7 @@
 
                 }, 500);
 
-                // this.drawPie('main', name, arr);
+                this.drawPie('main', name, arr);
             },
             countTimeSlice: function (arr, index) {
                 var curr = arr[index];
@@ -253,7 +322,7 @@
     height: 100px;
     visibility: hidden;
     position: absolute;
-    left: 1200px;
+    left: 900px;
     top: 80px;
   }
 
@@ -293,7 +362,7 @@
     height: 100px;
     visibility: hidden;
     position: absolute;
-    left: 1000px;
+    left: 920px;
     top: 450px;
   }
 
@@ -320,7 +389,7 @@
     height: 100px;
     visibility: hidden;
     position: absolute;
-    left: 1000px;
+    left: 800px;
     top: 600px;
   }
 

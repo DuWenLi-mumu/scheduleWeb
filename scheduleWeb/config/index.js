@@ -10,37 +10,48 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    // 代理配置表，在这里可以配置特定的请求代理到对应的API接口
+    // 例如将'localhost:8080/api/xxx'代理到'www.example.com/api/xxx'
+    // 使用方法：https://vuejs-templates.github.io/webpack/proxy.html
+    proxyTable: {
+      '/api': {
+        target: 'http://localhost:8082', // 接口的域名
+        // secure: false,  // 如果是https接口，需要配置这个参数
+        changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+        pathRewrite: {
+          '^/': ''
+        }
+      },
+      // Various Dev Server settings
+      host: 'localhost', // can be overwritten by process.env.HOST
+      port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+      autoOpenBrowser: false,
+      errorOverlay: true,
+      notifyOnErrors: true,
+      poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: false,
-    errorOverlay: true,
-    notifyOnErrors: true,
-    poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
+      // Use Eslint Loader?
+      // If true, your code will be linted during bundling and
+      // linting errors and warnings will be shown in the console.
+      useEslint: false,
+      // If true, eslint errors and warnings will also be shown in the error overlay
+      // in the browser.
+      showEslintErrorsInOverlay: false,
 
-    // Use Eslint Loader?
-    // If true, your code will be linted during bundling and
-    // linting errors and warnings will be shown in the console.
-    useEslint: false,
-    // If true, eslint errors and warnings will also be shown in the error overlay
-    // in the browser.
-    showEslintErrorsInOverlay: false,
+      /**
+       * Source Maps
+       */
 
-    /**
-     * Source Maps
-     */
+      // https://webpack.js.org/configuration/devtool/#development
+      devtool: 'cheap-module-eval-source-map',
 
-    // https://webpack.js.org/configuration/devtool/#development
-    devtool: 'cheap-module-eval-source-map',
+      // If you have problems debugging vue-files in devtools,
+      // set this to false - it *may* help
+      // https://vue-loader.vuejs.org/en/options.html#cachebusting
+      cacheBusting: true,
 
-    // If you have problems debugging vue-files in devtools,
-    // set this to false - it *may* help
-    // https://vue-loader.vuejs.org/en/options.html#cachebusting
-    cacheBusting: true,
-
-    cssSourceMap: true
+      cssSourceMap: true
+    }
   },
 
   build: {
