@@ -49,18 +49,18 @@
             </el-table-column>
           </el-table>
           <div style="marginTop: 20px">
-            <el-button class="el-button" @click="mySchedule(FIFOArr, 'FIFO')">
-              FIFO
-            </el-button>
-            <el-button class="el-button" @click="mySchedule(SJFArr, 'SJF')"
-              >SJF
-            </el-button>
-            <el-button class="el-button" @click="mySchedule(EDFArr, 'EDF')"
+            <el-button class="el-button" @click="mySchedule('fifo')"
+              >FIFO</el-button
+            >
+            <el-button class="el-button" @click="mySchedule('sjf')"
+              >SJF</el-button
+            >
+            <el-button class="el-button" @click="mySchedule('edf')"
               >EDF</el-button
             >
             <el-button
               class="el-button"
-              @click="mySchedule(PriorityArr, 'Priority')"
+              @click="mySchedule('priority')"
             >
               Priority
             </el-button>
@@ -68,10 +68,10 @@
         </div>
       </el-col>
       <el-col :span="10">
-        <div id="main" style="width: 600px; height: 400px"></div>
-        <h3>调度过程：{{ peopleList }}</h3>
-        <h3>当前接送的人：{{ currPeople }}</h3>
-        <h3>接送完成：{{ finish }}</h3>
+        <div id="main" style="width: 550px; height: 250px"></div>
+        <h5>调度过程：{{ peopleList }}</h5>
+        <h5>当前接送的人：{{ currPeople }}</h5>
+        <h5>接送完成：{{ finish }}</h5>
       </el-col>
     </el-row>
   </div>
@@ -128,257 +128,16 @@ export default {
           priority: 1,
         },
       ],
-
-      SJFArr: [
-        2,
-        2,
-        1,
-        1,
-        1,
-        3,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-      ],
-      FIFOArr: [
-        1,
-        1,
-        1,
-        1,
-        1,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        3,
-        3,
-        3,
-        3,
-        3,
-        5,
-        5,
-        5,
-        5,
-        5,
-        4,
-        4,
-        4,
-        4,
-        4,
-        -1,
-        -1,
-        -1,
-        -1,
-        -2,
-        -2,
-        -2,
-        -2,
-        -3,
-        -3,
-        -3,
-        -3,
-        -3,
-        -3,
-        -4,
-        -4,
-        -4,
-        -4,
-        -4,
-        -5,
-        -5,
-        -5,
-        -5,
-        -5,
-      ],
-      PriorityArr: [
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        1,
-        1,
-        1,
-        3,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-      ],
-      EDFArr: [
-        2,
-        2,
-        1,
-        1,
-        1,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        3,
-        4,
-        4,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-      ],
       carCoordinate: [20, 40],
-      people1: [900, 80],
-      people2: [800, 200],
-      people3: [200, 150],
-      people4: [50, 500],
-      people5: [920, 450],
-      people1Destination: [500, 50],
-      people2Destination: [100, 500],
-      people3Destination: [800, 600],
-      people4Destination: [500, 300],
+      people1: [600, 80],
+      people2: [700, 200],
+      people3: [1000, 150],
+      people4: [50, 250],
+      people5: [920, 300],
+      people1Destination: [500, 100],
+      people2Destination: [100, 200],
+      people3Destination: [800, 150],
+      people4Destination: [1100, 90],
       people5Destination: [400, 100],
       peopleList: [],
       currPeople: 1,
@@ -421,9 +180,6 @@ export default {
         xAxis.push(i);
       }
       this.charts.setOption({
-        title: {
-          text: name,
-        },
         grid: {
           left: "3%",
           right: "4%",
@@ -447,144 +203,112 @@ export default {
         ],
       });
     },
-    mySchedule: function (arr, name) {
-      // let data = this.getInputData();
-      let responseData = [];
-      let data = {
-        orders: [
-          {
-            id: 1,
-            arriveTime: 0,
-            executionTime1: 3,
-            executionTime2: 10,
-            deadline: 30,
-            priority: 1,
-          },
-          {
-            id: 2,
-            arriveTime: 0,
-            executionTime1: 6,
-            executionTime2: 8,
-            deadline: 20,
-            priority: 2,
-          },
-          {
-            id: 3,
-            arriveTime: 5,
-            executionTime1: 1,
-            executionTime2: 9,
-            deadline: 40,
-            priority: 1,
-          },
-          {
-            id: 4,
-            arriveTime: 10,
-            executionTime1: 2,
-            executionTime2: 6,
-            deadline: 45,
-            priority: 3,
-          },
-          {
-            id: 5,
-            arriveTime: 11,
-            executionTime1: 5,
-            executionTime2: 5,
-            deadline: 60,
-            priority: 1,
-          },
-        ],
-      };
-      axios.post("/fifo", data).then(function (res) {
-        responseData = res;
-      });
-
-      let peopleIndex = [];
-      var that = this;
-      var timesRun = 0;
-      var interval = setInterval(function () {
-        if (arr[timesRun] > 0) {
-          var currPeople = document.getElementById(
-            "divPeople" + arr[timesRun] + "Id"
-          );
-          var currDest = document.getElementById("dest" + arr[timesRun] + "Id");
-          currPeople.style.visibility = "visible";
-          currDest.style.visibility = "visible";
-          that.peopleList.push(arr[timesRun]);
-          that.currPeople = arr[timesRun];
-        } else {
-          that.currPeople = arr[timesRun] * -1;
-        }
-        switch (arr[timesRun]) {
-          case 1:
-            peopleIndex = that.people1;
-            break;
-          case 2:
-            peopleIndex = that.people2;
-            break;
-          case 3:
-            peopleIndex = that.people3;
-            break;
-          case 4:
-            peopleIndex = that.people4;
-            break;
-          case -1:
-            peopleIndex = that.people1Destination;
-            break;
-          case -2:
-            peopleIndex = that.people2Destination;
-            break;
-          case -3:
-            peopleIndex = that.people3Destination;
-            break;
-          case -4:
-            peopleIndex = that.people4Destination;
-            break;
-          case -5:
-            peopleIndex = that.people5Destination;
-            break;
-          default:
-            peopleIndex = that.people5;
-            break;
-        }
-        var tmp = that.countTimeSlice(arr, timesRun);
-        var times = tmp[0];
-        var stepX = (peopleIndex[0] - that.carCoordinate[0]) / times;
-        var stepY = (peopleIndex[1] - that.carCoordinate[1]) / times;
-        var carDiv = document.getElementById("divCarId");
-        that.carCoordinate[0] = that.carCoordinate[0] + stepX;
-        that.carCoordinate[1] = that.carCoordinate[1] + stepY;
-        carDiv.style.left = that.carCoordinate[0] + "px";
-        carDiv.style.top = that.carCoordinate[1] + "px";
-        if (timesRun >= arr.length) {
-          var currPeople = document.getElementById(
-            "divPeople" + arr[timesRun - 1] * -1 + "Id"
-          );
-          var currDest = document.getElementById(
-            "dest" + arr[timesRun - 1] * -1 + "Id"
-          );
-          currPeople.style.visibility = "hidden";
-          currDest.style.visibility = "hidden";
-          clearInterval(interval);
-        }
-        if (timesRun - 1 >= 0 && arr[timesRun] != arr[timesRun - 1]) {
-          if (arr[timesRun - 1] < 0) {
-            var currDest = document.getElementById(
-              "dest" + arr[timesRun - 1] * -1 + "Id"
-            );
-            currDest.style.visibility = "hidden";
-            that.finish.push(arr[timesRun - 1] * -1);
-          } else {
+    setOrderVisible: function (timesRun) {
+      for(let i = 0; i < this.tableData.length; i++){
+        if(this.tableData[i].arriveTime == timesRun){
             var currPeople = document.getElementById(
-              "divPeople" + arr[timesRun - 1] + "Id"
+              "divPeople" + (i+1) + "Id"
+            );
+            var currDest = document.getElementById(
+              "dest" + (i+1) + "Id"
+            );
+            currPeople.style.visibility = "visible";
+            currDest.style.visibility = "visible";
+        }
+      }
+    },
+    mySchedule: function (name) {
+      let responseData = [];
+
+      var that = this;
+      axios.post("/"+name, {"orders": this.tableData}).then(function (res) {
+        that.finish = []
+        that.peopleList = []
+        res = res.data
+
+        let peopleIndex = [];
+        var timesRun = 0;
+        var interval = setInterval(function () {
+          that.setOrderVisible(timesRun);
+          if (res[timesRun] > 0) {
+            that.peopleList.push(res[timesRun]);
+            that.currPeople = res[timesRun];
+          } else {
+            that.peopleList.push(res[timesRun] * -1);
+            that.currPeople = res[timesRun] * -1;
+          }
+          switch (res[timesRun]) {
+            case 1:
+              peopleIndex = that.people1;
+              break;
+            case 2:
+              peopleIndex = that.people2;
+              break;
+            case 3:
+              peopleIndex = that.people3;
+              break;
+            case 4:
+              peopleIndex = that.people4;
+              break;
+            case -1:
+              peopleIndex = that.people1Destination;
+              break;
+            case -2:
+              peopleIndex = that.people2Destination;
+              break;
+            case -3:
+              peopleIndex = that.people3Destination;
+              break;
+            case -4:
+              peopleIndex = that.people4Destination;
+              break;
+            case -5:
+              peopleIndex = that.people5Destination;
+              break;
+            default:
+              peopleIndex = that.people5;
+              break;
+          }
+          var tmp = that.countTimeSlice(res, timesRun);
+          var times = tmp[0];
+          var stepX = (peopleIndex[0] - that.carCoordinate[0]) / times;
+          var stepY = (peopleIndex[1] - that.carCoordinate[1]) / times;
+          var carDiv = document.getElementById("divCarId");
+          that.carCoordinate[0] = that.carCoordinate[0] + stepX;
+          that.carCoordinate[1] = that.carCoordinate[1] + stepY;
+          carDiv.style.left = that.carCoordinate[0] + "px";
+          carDiv.style.top = that.carCoordinate[1] + "px";
+          if (timesRun >= res.length) {
+            var currPeople = document.getElementById(
+              "divPeople" + res[timesRun - 1] * -1 + "Id"
+            );
+            var currDest = document.getElementById(
+              "dest" + res[timesRun - 1] * -1 + "Id"
             );
             currPeople.style.visibility = "hidden";
+            currDest.style.visibility = "hidden";
+            clearInterval(interval);
           }
-        }
+          if (timesRun - 1 >= 0 && res[timesRun] != res[timesRun - 1]) {
+            if (res[timesRun - 1] < 0) {
+              var currDest = document.getElementById(
+                "dest" + res[timesRun - 1] * -1 + "Id"
+              );
+              currDest.style.visibility = "hidden";
+              that.finish.push(res[timesRun - 1] * -1);
+            } else {
+              var currPeople = document.getElementById(
+                "divPeople" + res[timesRun - 1] + "Id"
+              );
+              currPeople.style.visibility = "hidden";
+            }
+          }
 
-        timesRun += 1;
-      }, 500);
+          timesRun += 1;
+        }, 500);
 
-      this.drawPie("main", name, arr);
+        that.drawPie("main", name, res);
+      });
     },
     countTimeSlice: function (arr, index) {
       var curr = arr[index];
@@ -605,14 +329,7 @@ export default {
           resolve();
         }, time);
       });
-    },
-
-    handleEdit(index, row) {
-      console.log(index, row);
-    },
-    handleDelete(index, row) {
-      console.log(index, row);
-    },
+    }
   },
 };
 </script>
@@ -640,7 +357,7 @@ export default {
 .el-div {
   /*background-color: aquamarine;*/
   /* width: 1590px; */
-  height: 600px;
+  height: 330px;
 }
 
 .el-people1 {
@@ -649,7 +366,7 @@ export default {
   height: 100px;
   visibility: hidden;
   position: absolute;
-  left: 900px;
+  left: 600px;
   top: 80px;
 }
 
@@ -659,7 +376,7 @@ export default {
   height: 100px;
   visibility: hidden;
   position: absolute;
-  left: 800px;
+  left: 700px;
   top: 200px;
 }
 
@@ -669,7 +386,7 @@ export default {
   height: 100px;
   visibility: hidden;
   position: absolute;
-  left: 200px;
+  left: 1000px;
   top: 150px;
 }
 
@@ -680,7 +397,7 @@ export default {
   visibility: hidden;
   position: absolute;
   left: 50px;
-  top: 500px;
+  top: 250px;
 }
 
 .el-people5 {
@@ -690,7 +407,7 @@ export default {
   visibility: hidden;
   position: absolute;
   left: 920px;
-  top: 450px;
+  top: 300px;
 }
 
 .el-dest1 {
@@ -699,7 +416,7 @@ export default {
   visibility: hidden;
   position: absolute;
   left: 500px;
-  top: 50px;
+  top: 100px;
 }
 
 .el-dest2 {
@@ -708,7 +425,7 @@ export default {
   visibility: hidden;
   position: absolute;
   left: 100px;
-  top: 500px;
+  top: 200px;
 }
 
 .el-dest3 {
@@ -717,7 +434,7 @@ export default {
   visibility: hidden;
   position: absolute;
   left: 800px;
-  top: 600px;
+  top: 150px;
 }
 
 .el-dest4 {
@@ -725,8 +442,8 @@ export default {
   height: 100px;
   visibility: hidden;
   position: absolute;
-  left: 500px;
-  top: 300px;
+  left: 1100px;
+  top: 90px;
 }
 
 .el-dest5 {
@@ -736,11 +453,5 @@ export default {
   position: absolute;
   left: 400px;
   top: 100px;
-}
-
-.el-divIllustrate {
-  height: 1000px;
-  /* position: absolute; */
-  /*background-color: #3D9DD9;*/
 }
 </style>
